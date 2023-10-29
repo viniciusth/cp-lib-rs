@@ -7,21 +7,17 @@ use rand::Rng;
 
 pub fn generate_case<T: Write>(mut output: BufWriter<T>) -> Result<(), Box<dyn Error + 'static>> {
     let mut rng = rand::thread_rng();
-    let mut ranges: [u8; 4] = rng.gen();
-
-    if ranges[0] > ranges[1] {
-        ranges.swap(0, 1);
-    }
-
-    if ranges[2] > ranges[3] {
-        ranges.swap(2, 3);
-    }
-
+    let n = rng.gen_range(1..=15);
     writeln!(
         &mut output,
-        "{} {} {} {}",
-        ranges[0], ranges[1], ranges[2], ranges[3]
+        "1\n{n}\n"
     )?;
+
+    for _ in 0..n {
+        let x = rng.gen_range(1..=n);
+        write!(&mut output, "{x} ")?;
+    }
+    writeln!(&mut output)?;
 
     Ok(())
 }

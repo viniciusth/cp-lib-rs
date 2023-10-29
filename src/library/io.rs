@@ -29,6 +29,25 @@ impl<R: io::BufRead> Scanner<R> {
             }
         }
     }
+    pub fn i32(&mut self) -> i32 {
+        self.token()
+    }
+
+    pub fn i64(&mut self) -> i64 {
+        self.token()
+    }
+
+    pub fn usize(&mut self) -> usize {
+        self.token()
+    }
+
+    pub fn i64_array(&mut self, n: usize) -> Vec<i64> {
+        (0..n).map(|_| self.i64()).collect()
+    }
+
+    pub fn i32_array(&mut self, n: usize) -> Vec<i32> {
+        (0..n).map(|_| self.i32()).collect()
+    }
 }
 
 pub fn create_io() -> (

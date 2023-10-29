@@ -12,7 +12,7 @@ use crate::library::{
 pub fn solve<I: BufRead, O: Write>(
     mut input: Scanner<I>,
     mut output: BufWriter<O>,
-) -> Result<(), Box<dyn Error + 'static>> {
+) -> Result<(), Box<dyn Error>> {
     let n: usize = input.token();
     let mut points = Vec::with_capacity(n);
     for _ in 0..n {
@@ -25,7 +25,7 @@ pub fn solve<I: BufRead, O: Write>(
     Ok(())
 }
 
-pub fn main() -> Result<(), Box<dyn Error + 'static>> {
+pub fn main() -> Result<(), Box<dyn Error>> {
     // 200MB
     const STACK_SIZE: usize = 200 * 1024 * 1024;
     thread::Builder::new()

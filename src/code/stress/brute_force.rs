@@ -10,18 +10,30 @@ pub fn solve<I: BufRead, O: Write>(
     mut input: Scanner<I>,
     mut output: BufWriter<O>,
 ) -> Result<(), Box<dyn Error + 'static>> {
-    let (l1, r1, l2, r2): (i32, i32, i32, i32) =
-        (input.token(), input.token(), input.token(), input.token());
-
-    writeln!(
-        &mut output,
-        "{}",
-        if l1.max(l2) <= r1.min(r2) {
-            "YES"
-        } else {
-            "NO"
+    let _t = input.token::<usize>();
+    let n = input.token::<usize>();
+    let mut cnt = 0;
+    let mut arr = vec![];
+    for _ in 0..n {
+        let x = input.token::<i64>();
+        arr.push(x);
+    }
+    // dbg!(n);
+    for i in 0..n {
+        for j in i + 1..n {
+            let mut bad = false;
+            for k in 0..n {
+                bad |= (arr[i] % arr[k]) == 0 && (arr[j] % arr[k]) == 0;
+                if bad {
+                    // dbg!(i, j, k, arr[i], arr[j], arr[k]);
+                    break;
+                }
+            }
+            if !bad {
+                cnt += 1;
+            }
         }
-    )?;
-
+    }
+    writeln!(output, "{cnt}")?;
     Ok(())
 }

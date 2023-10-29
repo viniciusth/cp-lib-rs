@@ -10,7 +10,7 @@ use crate::library::io::{create_io, Scanner};
 pub fn solve<I: BufRead, O: Write>(
     mut input: Scanner<I>,
     mut output: BufWriter<O>,
-) -> Result<(), Box<dyn Error + 'static>> {
+) -> Result<(), Box<dyn Error>> {
     let (l1, r1, l2, r2): (i32, i32, i32, i32) =
         (input.token(), input.token(), input.token(), input.token());
 
@@ -29,7 +29,7 @@ pub fn solve<I: BufRead, O: Write>(
     Ok(())
 }
 
-pub fn main() -> Result<(), Box<dyn Error + 'static>> {
+pub fn main() -> Result<(), Box<dyn Error>> {
     // 200MB
     const STACK_SIZE: usize = 200 * 1024 * 1024;
     thread::Builder::new()
