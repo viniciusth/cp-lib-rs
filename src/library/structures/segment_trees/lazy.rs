@@ -1,5 +1,6 @@
 use crate::library::structures::segment_trees::LazyNode;
 
+#[derive(Clone)]
 pub struct LazySegmentTree<T, N: LazyNode<T>> {
     n: usize,
     data: Vec<N>,

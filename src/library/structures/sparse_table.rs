@@ -1,5 +1,8 @@
-type SparseTableOperation<T> = Box<dyn Fn(T, T) -> T>;
+use std::rc::Rc;
 
+type SparseTableOperation<T> = Rc<dyn Fn(T, T) -> T>;
+
+#[derive(Clone)]
 pub struct SparseTable<T> {
     pub table: Vec<Vec<T>>,
     pub log2: Vec<usize>,
@@ -11,7 +14,7 @@ where
     T: Ord + Copy,
 {
     pub fn new(input: Vec<T>) -> Self {
-        let operation = Box::new(|a: T, b: T| a.min(b));
+        let operation = Rc::new(|a: T, b: T| a.min(b));
         Self::build(input, operation)
     }
 

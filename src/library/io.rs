@@ -37,16 +37,31 @@ impl<R: io::BufRead> Scanner<R> {
         self.token()
     }
 
+    pub fn i128(&mut self) -> i128 {
+        self.token()
+    }
+
     pub fn usize(&mut self) -> usize {
         self.token()
     }
 
-    pub fn i64_array(&mut self, n: usize) -> Vec<i64> {
-        (0..n).map(|_| self.i64()).collect()
+    pub fn vec<T>(&mut self, n: usize) -> Vec<T>
+    where
+        T: str::FromStr,
+    {
+        (0..n).map(|_| self.token()).collect()
     }
 
-    pub fn i32_array(&mut self, n: usize) -> Vec<i32> {
-        (0..n).map(|_| self.i32()).collect()
+    pub fn i64_pair_array(&mut self, n: usize) -> Vec<(i64, i64)> {
+        (0..n).map(|_| (self.i64(), self.i64())).collect()
+    }
+
+    pub fn string(&mut self) -> String {
+        self.token::<String>()
+    }
+
+    pub fn bytes(&mut self) -> Vec<u8> {
+        self.token::<String>().into_bytes()
     }
 }
 

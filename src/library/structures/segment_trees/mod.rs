@@ -17,16 +17,16 @@ pub struct SumNode<T> {
 }
 
 pub trait LazyNodeType:
-    Default + Copy + AddAssign + Add<Output = Self> + Mul<Output = Self> + TryFrom<usize>
+    Default + Copy + AddAssign + Add<Output = Self> + Mul<Output = Self>
 {
 }
 
 impl<T> LazyNodeType for T where
-    T: Default + Copy + AddAssign + Add<Output = Self> + Mul<Output = Self> + TryFrom<usize>
+    T: Default + Copy + AddAssign + Add<Output = Self> + Mul<Output = Self>
 {
 }
 
-impl<T: LazyNodeType> LazyNode<T> for SumNode<T> {
+impl<T: LazyNodeType + TryFrom<usize>> LazyNode<T> for SumNode<T> {
     fn new() -> Self {
         Self {
             sum: T::default(),
@@ -54,5 +54,42 @@ impl<T: LazyNodeType> LazyNode<T> for SumNode<T> {
 
     fn value(&self) -> T {
         self.sum
+    }
+}
+
+#[derive(Clone, Copy)]
+pub struct MaxNode<T> {
+    max: T,
+    lazy: T,
+}
+
+impl<T: LazyNodeType + Ord> LazyNode<T> for MaxNode<T> {
+    fn new() -> Self {
+        Self {
+            max: T::default(),
+            lazy: T::default(),
+        }
+    }
+
+    fn add_update(&mut self, value: T) {
+        self.lazy += value;
+    }
+
+    fn apply_update(&mut self, _l: usize, _r: usize) -> T {
+        self.max += self.lazy;
+        let tmp = self.lazy;
+        self.lazy = T::default();
+        tmp
+    }
+
+    fn merge(&self, other: &Self) -> Self {
+        Self {
+            max: self.max.max(other.max),
+            lazy: T::default(),
+        }
+    }
+
+    fn value(&self) -> T {
+        self.max
     }
 }
