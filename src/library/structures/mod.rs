@@ -8,3 +8,4 @@ pub mod trie_bit;
 pub mod xor_basis;
 pub mod dvec;
 pub mod pair_heap;
+pub mod hopcroft_karp;
