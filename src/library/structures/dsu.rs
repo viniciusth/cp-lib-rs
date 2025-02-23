@@ -80,3 +80,73 @@ impl BipartiteDSU {
         true
     }
 }
+
+/// 0-indexed DSU with rollbacks.
+/// Merge and Find operations are O(log n).
+#[derive(Debug)]
+pub struct RollbackDSU {
+    parent: Vec<usize>,
+    size: Vec<usize>,
+    /// Saves which element transformed from a root to a child during the last merge, if any.
+    operations: Vec<Option<usize>>,
+    connected_components: usize,
+}
+
+impl RollbackDSU {
+    pub fn new(n: usize) -> Self {
+        Self {
+            parent: (0..n).into_iter().collect(),
+            size: vec![1; n],
+            operations: Vec::new(),
+            connected_components: n,
+        }
+    }
+
+    pub fn find(&self, x: usize) -> usize {
+        if self.parent[x] == x {
+            return x;
+        }
+
+        self.find(self.parent[x])
+    }
+
+    pub fn merge(&mut self, mut x: usize, mut y: usize) -> bool {
+        x = self.find(x);
+        y = self.find(y);
+        if x == y {
+            self.operations.push(None);
+            return false;
+        }
+
+        if self.size[x] < self.size[y] {
+            std::mem::swap(&mut x, &mut y);
+        }
+
+        self.parent[y] = x;
+        self.size[x] += self.size[y];
+        self.operations.push(Some(y));
+        self.connected_components -= 1;
+
+        true
+    }
+
+    pub fn rollback(&mut self, quantity: usize) {
+        assert!(quantity <= self.operations.len(), "rollbacking more than what was applied.");
+        for _ in 0..quantity {
+            let Some(y) = self.operations.pop().unwrap() else {
+                continue;
+            };
+            self.size[self.parent[y]] -= self.size[y];
+            self.parent[y] = y;
+            self.connected_components += 1;
+        }
+    }
+
+    pub fn connected_components(&self) -> usize {
+        self.connected_components
+    }
+
+    pub fn len(&self) -> usize {
+        self.size.len()
+    }
+}

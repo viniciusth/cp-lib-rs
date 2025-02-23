@@ -1,11 +1,13 @@
 pub mod dsu;
+pub mod dvec;
 pub mod fenwick_tree;
+pub mod hopcroft_karp;
 pub mod lazy_sparse_table;
 pub mod lca;
+pub mod pair_heap;
+pub mod rolling_hash;
 pub mod segment_trees;
 pub mod sparse_table;
 pub mod trie_bit;
 pub mod xor_basis;
-pub mod dvec;
-pub mod pair_heap;
-pub mod hopcroft_karp;
+pub mod offline_removal;

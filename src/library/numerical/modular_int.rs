@@ -4,7 +4,7 @@ use std::ops::{Mul, MulAssign};
 pub struct ModInt<const MOD: u32>(u32);
 
 impl<const MOD: u32> ModInt<MOD> {
-    pub fn new(x: i64) -> Self {
+    pub fn new(x: u64) -> Self {
         Self((x % (MOD as i64)) as u32)
     }
 

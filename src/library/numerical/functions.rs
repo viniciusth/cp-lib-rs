@@ -36,3 +36,19 @@ pub fn factorize(mut n: i64) -> Vec<(i64, i64)> {
     res
 }
 
+#[inline]
+pub fn modpow(mut x: i64, mut n: i64, m: i64) -> i64 {
+    assert!(n >= 0, "n must be non-negative");
+    assert!(m > 0, "m must be positive");
+    assert!((m-1).checked_mul(m-1).is_some(), "(m-1)^2 must fit in i64");
+    x %= m;
+    let mut res = 1;
+    while n > 0 {
+        if n & 1 == 1 {
+            res = res * x % m;
+        }
+        x = x * x % m;
+        n >>= 1;
+    }
+    res
+}
